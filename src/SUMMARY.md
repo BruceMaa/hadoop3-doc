@@ -1,8 +1,8 @@
 # Summary
 
-[开头章节](./README.md)
-- [Genneral]()
-    - [Overview]()
+[](./index.md)
+- [General]()
+    - [Overview](./index.md)
     - [Single Node Setup]()
     - [Cluster Setup]()
     - [Commands Reference]()
