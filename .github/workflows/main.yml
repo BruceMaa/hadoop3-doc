@@ -1,0 +1,37 @@
+name: "mdbook"
+
+on:
+  push:
+    branches: 
+      - master
+    paths:
+      - '!README*.md'
+
+jobs:
+  publish:
+    name: publish
+    strategy:
+      matrix:
+        runs-on: [ubuntu-latest]
+      fail-fast: true
+
+    runs-on: ${{ matrix.runs-on }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup mdBook
+      uses: peaceiris/actions-mdbook@v1
+      with:
+        mdbook-version: 'latest'
+    - name: mdBook build
+      run: mdbook clean && mdbook build
+    - name: publish docs
+      run: |
+        git config user.name "${GITHUB_ACTOR}"
+        git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+        if [ "`git status -s`" ]
+        then
+          git add -A
+          git commit -am "Auto publish: ${{ steps.vars.outputs.commit_msg }} with $GITHUB_WORKFLOW on $GITHUB_RUN_NUMBER"
+        fi  
+        git push
