@@ -4,8 +4,16 @@ on:
   push:
     branches: 
       - master
-    paths:
-      - '!README*.md'
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      name:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Who are you?'
+        # Default value if no value is explicitly provided
+        default: 'BruceMaa'
+        # Input has to be provided for the workflow to run
+        required: true
 
 jobs:
   publish:
