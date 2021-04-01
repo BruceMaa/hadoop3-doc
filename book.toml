@@ -1,10 +1,10 @@
 [book]
 authors = ["BruceMaa"]
-language = "en"
+language = "zh-Hans"
 multilingual = false
 src = "src"
-title = "mdbook-template"
-description = "The example book covers examples."
+title = "Hadoop3 Doc"
+description = "Hadoop3官方文档中文翻译"
 
 [build]
 build-dir = "docs"
@@ -16,11 +16,11 @@ curly-quotes = true
 mathjax-support = false
 google-analytics = "UA-82993633-1"
 no-section-label = false
-git-repository-url = "https://github.com/GitHubTemplates/docs-use-mdbook"
+git-repository-url = "https://github.com/BruceMaa/Hadoop3-doc"
 git-repository-icon = "fa-github"
 
 [output.html.playpen]
-editable = false
+editable = true
 copy-js = true
 
 [output.html.search]

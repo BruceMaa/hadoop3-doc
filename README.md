@@ -5,7 +5,7 @@
 [![Github Star][github-repo-star-image]][github-repo-url]
 [![standard-readme compliant][standard-readme-image]](standard-readme-url)
 
-[背景](#背景) | [介绍](#介绍) | [使用](#使用) | [示例](#示例) | [相关仓库](#相关仓库) | [维护者](#维护者) | [如何贡献](#如何贡献) | [协议](#协议) | [English](README.en-US.md)
+[背景](#背景) | [介绍](#介绍) | [使用](#使用) | [示例](#示例) | [相关仓库](#相关仓库) | [维护者](#维护者) | [如何贡献](#如何贡献) | [协议](#协议)
 
 ## 背景
 
@@ -37,10 +37,6 @@ docs-use-mdbook
 1. [README.md](README.md)
 
     > 自诉文件，包含仓库中文件相关信息的文本文件，通常是仓库访问者看到的第一个文件。自述文件连同仓库许可证、参与指南以及行为准则，帮助您交流要求和管理项目的参与。
-
-2. [README.en-US.md](README.en-US.md)
-
-    > 自诉文件英文版。
 
 3. [LICENSE](LICENSE)
 
