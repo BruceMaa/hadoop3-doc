@@ -3,7 +3,7 @@ authors = ["BruceMaa"]
 language = "zh-Hans"
 multilingual = false
 src = "src"
-title = "Hadoop3 Doc"
+title = "Hadoop3 文档"
 description = "Hadoop3官方文档中文翻译"
 
 [build]
