@@ -1,48 +1,48 @@
 
 # Apache Hadoop 3.2.2
 
-Apache Hadoop 3.2.2 incorporates a number of significant enhancements over the previous major release line (hadoop-3.2).
+Apache Hadoop 3.2.2在以前的主要发行版本（hadoop-3.2）上进行了许多重大改进。
 
-# Overview
+# 概述
 
-Users are encouraged to read the full set of release notes. This page provides an overview of the major changes.
+我们鼓励用户阅读全套的发行说明。 此页面概述了主要更改。
 
-## ABFS: fix for Sever Name Indication (SNI)
+## ABFS: 修复服务名称指示 (SNI)
 
-ABFS: Bug fix to support Server Name Indication (SNI).
+ABFS：错误修复，以支持服务器名称指示（SNI）。
 
-## Setting permissions on name directory fails on non posix compliant filesystems
+## 在不符合posix的文件系统上设置名称目录的权限失败
 
-Fixed namenode/journal startup on Windows.
+修复了Windows系统上的namenode / journal启动。
 
-## Backport HDFS persistent memory read cache support to branch-3.2**
+## 将HDFS持久存储读缓存回传支持到分支3.2**
 
-Non-volatile storage class memory (SCM, also known as persistent memory) is supported in HDFS cache. To enable SCM cache, user just needs to configure SCM volume for property “dfs.datanode.cache.pmem.dirs” in hdfs-site.xml. And all HDFS cache directives keep unchanged. There are two implementations for HDFS SCM Cache, one is pure java code implementation and the other is native PMDK based implementation. The latter implementation can bring user better performance gain in cache write and cache read. If PMDK native libs could be loaded, it will use PMDK based implementation otherwise it will fallback to java code implementation. To enable PMDK based implementation, user should install PMDK library by referring to the official site [http://pmem.io/](http://pmem.io/). Then, build Hadoop with PMDK support by referring to “PMDK library build options” section in `BUILDING.txt` in the source code. If multiple SCM volumes are configured, a round-robin policy is used to select an available volume for caching a block. Consistent with DRAM cache, SCM cache also has no cache eviction mechanism. When DataNode receives a data read request from a client, if the corresponding block is cached into SCM, DataNode will instantiate an InputStream with the block location path on SCM (pure java implementation) or cache address on SCM (PMDK based implementation). Once the InputStream is created, DataNode will send the cached data to the client. Please refer “Centralized Cache Management” guide for more details.
+HDFS缓存中支持非易失性存储类内存（SCM，也称为持久性内存）。要启用SCM缓存，用户只需在`hdfs-site.xml`中为属性"dfs.datanode.cache.pmem.dirs"配置SCM卷。并且所有HDFS缓存指令均保持不变。 HDFS SCM缓存有两种实现，一种是纯Java代码实现，另一种是基于本机PMDK的实现。后一种实现可以在缓存写入和缓存读取方面为用户带来更好的性能提升。如果可以加载PMDK本机库，它将使用基于PMDK的实现，否则将回退到Java代码实现。要启用基于PMDK的实现，用户应通过参考官方网站[http://pmem.io/](http://pmem.io/）来安装PMDK库。然后，通过参考源代码“ BUILDING.txt”中的“ PMDK库构建选项”部分，构建具有PMDK支持的Hadoop。如果配置了多个SCM卷，则使用循环策略来选择用于缓存块的可用卷。与DRAM高速缓存一致，SCM高速缓存也没有高速缓存逐出机制。当DataNode收到来自客户端的数据读取请求时，如果将相应的块缓存到SCM中，则DataNode将使用SCM上的块位置路径（纯Java实现）或SCM上的缓存地址（基于PMDK的实现）实例化InputStream。创建InputStream后，DataNode会将缓存的数据发送到客户端。请参阅“集中式缓存管理”指南以了解更多详细信息。
 
-## Consistent Reads from Standby Node
+## 从备用节点读取一致
 
-Observer is a new type of a NameNode in addition to Active and Standby Nodes in HA settings. An Observer Node maintains a replica of the namespace same as a Standby Node. It additionally allows execution of clients read requests. To ensure read-after-write consistency within a single client, a state ID is introduced in RPC headers. The Observer responds to the client request only after its own state has caught up with the client’s state ID, which it previously received from the Active NameNode.
+观察者是除HA设置中的活动节点和备用节点外的一种新型NameNode。 观察者节点维护与备用节点相同的名称空间的副本。 此外，它还允许执行客户端读取请求。 为了确保单个客户端中的写后读取一致性，在RPC头中引入了状态ID。 观察者仅在其自身的状态赶上了它先前从活动NameNode接收到的客户机的状态ID后，才对客户机请求作出响应。
 
-Clients can explicitly invoke a new client protocol call msync(), which ensures that subsequent reads by this client from an Observer are consistent.
+客户端可以显式调用新的客户端协议msync()，以确保此客户端从Observer进行的后续读取是一致的。
 
-A new client-side ObserverReadProxyProvider is introduced to provide automatic switching between Active and Observer NameNodes for submitting respectively write and read requests.
+引入了新的客户端ObserverReadProxyProvider，以提供Active和Observer NameNode之间的自动切换，以分别提交写入和读取请求。
 
-## Update checkstyle to 8.26 and maven-checkstyle-plugin to 3.1.0
+## 将checkstyle更新为8.26，并将maven-checkstyle-plugin更新为3.1.0
 
-Updated checkstyle to 8.26 and updated maven-checkstyle-plugin to 3.1.0.
+将checkstyle更新为8.26，并将maven-checkstyle-plugin更新为3.1.0
 
-## ZKFC ignores dfs.namenode.rpc-bind-host and uses dfs.namenode.rpc-address to bind to host address
+## ZKFC忽略`dfs.namenode.rpc-bind-host`并使用`dfs.namenode.rpc-address`绑定到主机地址
 
-ZKFC binds host address to “dfs.namenode.servicerpc-bind-host”, if configured. Otherwise, it binds to “dfs.namenode.rpc-bind-host”. If neither of those is configured, ZKFC binds itself to NameNode RPC server address (effectively “dfs.namenode.rpc-address”).
+如果已经配置，ZKFC将主机地址绑定到`dfs.namenode.servicerpc-bind-host`。否则，它将绑定到`dfs.namenode.rpc-bind-host`。 如果两者均未配置，则ZKFC会将其自身绑定到NameNode RPC服务器地址（有效的`dfs.namenode.rpc-address`）。
 
-## ListStatus on ViewFS root (ls “/”) should list the linkFallBack root (configured target root).
+## ViewFS根目录（ls“ /”）上的ListStatus应该列出linkFallBack根目录（已配置的目标根目录）。
 
-ViewFS#listStatus on root(“/”) considers listing from fallbackLink if available. If the same directory name is present in configured mount path as well as in fallback link, then only the configured mount path will be listed in the returned result.
+如果可用，根目录("/")上的ViewFS＃listStatus通过fallbackLink列出。如果在配置的安装路径和回退链接中存在相同的目录名称，则返回的结果中仅列出配置的安装路径。
 
-## NMs should supply a health status when registering with RM
+## NameNode在向ResourceManager注册时，需要提供健康状态
 
-Improved node registration with node health status.
+改进了具有节点运行状况的节点注册。
 
-# Getting Started
+# 入门
 
-The Hadoop documentation includes the information you need to get started using Hadoop. Begin with the [Single Node Setup](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html) which shows you how to set up a single-node Hadoop installation. Then move on to the [Cluster Setup](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/ClusterSetup.html) to learn how to set up a multi-node Hadoop installation.
+Hadoop文档包含开始使用Hadoop所需的信息。从[单节点设置](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html)开始，向您展示如何设置单节点Hadoop安装。然后转到[集群设置](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/ClusterSetup.html)，了解如何设置多节点Hadoop安装。

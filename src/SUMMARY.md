@@ -1,10 +1,10 @@
 # Summary
 
 [](./index.md)
-- [General]()
-    - [Overview](./index.md)
-    - [Single Node Setup]()
-    - [Cluster Setup]()
+- [概要]()
+    - [概述](./index.md)
+    - [单节点设置]()
+    - [集群设置]()
     - [Commands Reference]()
     - [FileSystem Shell]()
     - [Compatibility Specification]()
